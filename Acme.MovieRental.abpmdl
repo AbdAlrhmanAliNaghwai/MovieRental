@@ -1,0 +1,109 @@
+{
+  "template": "app",
+  "imports": {
+    "Volo.Abp.LeptonXLiteTheme": {
+      "version": "5.4.0",
+      "isInstalled": true,
+      "creationTime": "06/03/2026 12:28:36 +00:00"
+    },
+    "Volo.Abp.Account": {
+      "version": "10.4.0",
+      "isInstalled": true,
+      "creationTime": "06/03/2026 12:28:36 +00:00"
+    },
+    "Volo.Abp.OpenIddict": {
+      "version": "10.4.0",
+      "isInstalled": true,
+      "creationTime": "06/03/2026 12:28:36 +00:00"
+    },
+    "Volo.Abp.Identity": {
+      "version": "10.4.0",
+      "isInstalled": true,
+      "creationTime": "06/03/2026 12:28:36 +00:00"
+    },
+    "Volo.Abp.TenantManagement": {
+      "version": "10.4.0",
+      "isInstalled": true,
+      "creationTime": "06/03/2026 12:28:36 +00:00"
+    },
+    "Volo.Abp.SettingManagement": {
+      "version": "10.4.0",
+      "isInstalled": true,
+      "creationTime": "06/03/2026 12:28:36 +00:00"
+    },
+    "Volo.Abp.PermissionManagement": {
+      "version": "10.4.0",
+      "isInstalled": true,
+      "creationTime": "06/03/2026 12:28:36 +00:00"
+    },
+    "Volo.Abp.FeatureManagement": {
+      "version": "10.4.0",
+      "isInstalled": true,
+      "creationTime": "06/03/2026 12:28:36 +00:00"
+    }
+  },
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {}
+    }
+  },
+  "packages": {
+    "Acme.MovieRental.Application": {
+      "path": "src/Acme.MovieRental.Application/Acme.MovieRental.Application.abppkg",
+      "folder": "src"
+    },
+    "Acme.MovieRental.Application.Tests": {
+      "path": "test/Acme.MovieRental.Application.Tests/Acme.MovieRental.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "Acme.MovieRental.Domain.Shared": {
+      "path": "src/Acme.MovieRental.Domain.Shared/Acme.MovieRental.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "Acme.MovieRental.Application.Contracts": {
+      "path": "src/Acme.MovieRental.Application.Contracts/Acme.MovieRental.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "Acme.MovieRental.HttpApi": {
+      "path": "src/Acme.MovieRental.HttpApi/Acme.MovieRental.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "Acme.MovieRental.HttpApi.Client": {
+      "path": "src/Acme.MovieRental.HttpApi.Client/Acme.MovieRental.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "Acme.MovieRental.EntityFrameworkCore.Tests": {
+      "path": "test/Acme.MovieRental.EntityFrameworkCore.Tests/Acme.MovieRental.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "Acme.MovieRental.EntityFrameworkCore": {
+      "path": "src/Acme.MovieRental.EntityFrameworkCore/Acme.MovieRental.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "Acme.MovieRental.TestBase": {
+      "path": "test/Acme.MovieRental.TestBase/Acme.MovieRental.TestBase.abppkg",
+      "folder": "test"
+    },
+    "Acme.MovieRental.Domain.Tests": {
+      "path": "test/Acme.MovieRental.Domain.Tests/Acme.MovieRental.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "Acme.MovieRental.HttpApi.Client.ConsoleTestApp": {
+      "path": "test/Acme.MovieRental.HttpApi.Client.ConsoleTestApp/Acme.MovieRental.HttpApi.Client.ConsoleTestApp.abppkg",
+      "folder": "test"
+    },
+    "Acme.MovieRental.DbMigrator": {
+      "path": "src/Acme.MovieRental.DbMigrator/Acme.MovieRental.DbMigrator.abppkg",
+      "folder": "src"
+    },
+    "Acme.MovieRental.HttpApi.Host": {
+      "path": "src/Acme.MovieRental.HttpApi.Host/Acme.MovieRental.HttpApi.Host.abppkg",
+      "folder": "src"
+    },
+    "Acme.MovieRental.Domain": {
+      "path": "src/Acme.MovieRental.Domain/Acme.MovieRental.Domain.abppkg",
+      "folder": "src"
+    }
+  }
+}

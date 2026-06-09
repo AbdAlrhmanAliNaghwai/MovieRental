@@ -1,0 +1,96 @@
+<div class="card">
+  <div class="card-header">
+    <div class="row">
+      <div class="col col-md-6">
+        <h5 class="card-title">Rentals</h5>
+      </div>
+      <div class="text-end col col-md-6">
+        <button class="btn btn-primary" (click)="openModal()">
+          <i class="fa fa-plus me-1"></i>
+          New Rental
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <ngx-datatable [rows]="rentals.items" [count]="rentals.totalCount" [list]="list" default>
+      <ngx-datatable-column name="Customer" prop="customerName"></ngx-datatable-column>
+      <ngx-datatable-column name="Movie" prop="movieTitle"></ngx-datatable-column>
+      <ngx-datatable-column name="Rental Date">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          {{ row.rentalDate | date: 'mediumDate' }}
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="Due Date">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          {{ row.dueDate | date: 'mediumDate' }}
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="Status">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <span
+            class="badge"
+            [class.bg-success]="row.isReturned"
+            [class.bg-warning]="!row.isReturned"
+          >
+            {{ row.isReturned ? 'Returned' : 'Active' }}
+          </span>
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="Actions">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <div ngbDropdown container="body" class="d-inline-block">
+            <button class="btn btn-primary btn-sm dropdown-toggle" ngbDropdownToggle>
+              Actions
+            </button>
+            <div ngbDropdownMenu>
+              <button
+                ngbDropdownItem
+                (click)="markAsReturned(row.id, row.movieTitle)"
+                [disabled]="row.isReturned"
+              >
+                Mark as Returned
+              </button>
+              <button ngbDropdownItem (click)="delete(row.id)">Delete</button>
+            </div>
+          </div>
+        </ng-template>
+      </ngx-datatable-column>
+    </ngx-datatable>
+  </div>
+</div>
+
+<abp-modal [(visible)]="isModalOpen">
+  <ng-template #abpHeader>
+    <h3>New Rental</h3>
+  </ng-template>
+
+  <ng-template #abpBody>
+    <form [formGroup]="form" id="rental-form">
+      <div class="mb-3">
+        <label for="customerId">Customer</label>
+        <select id="customerId" formControlName="customerId" class="form-select">
+          <option value="">-- Select Customer --</option>
+          <option *ngFor="let c of customers" [value]="c.id">{{ c.fullName }}</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="movieId">Movie</label>
+        <select id="movieId" formControlName="movieId" class="form-select">
+          <option value="">-- Select Movie --</option>
+          <option *ngFor="let m of movies" [value]="m.id">{{ m.title }}</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="dueDate">Due Date</label>
+        <input id="dueDate" formControlName="dueDate" type="date" class="form-control" />
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template #abpFooter>
+    <button type="button" class="btn btn-secondary" #abpClose>Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="save()">Save</button>
+  </ng-template>
+</abp-modal>
