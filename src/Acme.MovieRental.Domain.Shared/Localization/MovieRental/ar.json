@@ -62,6 +62,11 @@
     "RentCreated": "تم إنشاء الإيجار",
     "MovieRental:DueDateCannotBeInThePast": "لا يمكن أن يكون تاريخ الاستحقاق في الماضي. يرجى اختيار تاريخ مستقبلي.",
     "MovieRental:CannotDeleteActiveRental": "لا يمكن حذف استئجار نشط. يرجى تسجيل إعادته أولاً.",
-    "MovieRental:MoviePriceCannotBeLessThanZero": "السعر اليومي لا يمكن أن يكون أقل من 0."
+    "MovieRental:MoviePriceCannotBeLessThanZero": "السعر اليومي لا يمكن أن يكون أقل من 0.",
+    "MovieRental:ReleaseYearCannotBeLessThanZero": "سنة الإصدار لا يمكن أن تكون أقل من 0.",
+    "TitleIsRequired": "العنوان مطلوب.",
+    "YearOfReleaseIsRequired": "سنة الإصدار مطلوبة.",
+    "PriceIsRequired": "السعر اليومي مطلوب.",
+    "DirectorIsRequired": "يرجى اختيار مخرج."
   }
 }

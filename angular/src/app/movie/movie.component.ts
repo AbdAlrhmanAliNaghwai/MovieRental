@@ -87,7 +87,10 @@ export class MovieComponent implements OnInit {
   }
 
   save() {
-    if (this.form.invalid) return;
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
 
     const request = this.isEditMode
       ? this.movieService.update(this.selectedMovieId, this.form.value)

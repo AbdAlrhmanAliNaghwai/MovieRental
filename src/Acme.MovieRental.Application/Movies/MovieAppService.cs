@@ -23,14 +23,25 @@ IMovieAppService
 
     public override async Task<MovieDto> CreateAsync(CreateUpdateMovieDto input)
     {
+        if (input.YearOfRelease <= 0)
+        {
+            throw new ReleaseYearCannotBeLessThanZero();
+        }
+
         if (input.Price <= 0)
         {
             throw new MoviePriceCannotBeLessThanZero();
         }
+
         return await base.CreateAsync(input);
     }
     public override async Task<MovieDto> UpdateAsync(Guid id, CreateUpdateMovieDto input)
     {
+        if (input.YearOfRelease <= 0)
+        {
+            throw new ReleaseYearCannotBeLessThanZero();
+        }
+
         if (input.Price <= 0)
         {
             throw new MoviePriceCannotBeLessThanZero();

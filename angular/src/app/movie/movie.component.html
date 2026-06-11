@@ -34,7 +34,9 @@
               <button ngbDropdownItem (click)="openModal(row)">
                 {{ '::Edit' | abpLocalization }}
               </button>
-              <button ngbDropdownItem (click)="delete(row.id)">{{'::Delete' | abpLocalization}}</button>
+              <button ngbDropdownItem (click)="delete(row.id)">
+                {{ '::Delete' | abpLocalization }}
+              </button>
             </div>
           </div>
         </ng-template>
@@ -52,8 +54,20 @@
     <form [formGroup]="form" id="movie-form">
       <div class="mb-3">
         <label for="title">{{ '::Title' | abpLocalization }}</label>
-        <input id="title" formControlName="title" class="form-control" />
+        <input
+          id="title"
+          formControlName="title"
+          class="form-control"
+          [class.is-invalid]="form.get('title').invalid && form.get('title').touched"
+        />
+        <div
+          class="invalid-feedback"
+          *ngIf="form.get('title').invalid && form.get('title').touched"
+        >
+          {{ '::TitleIsRequired' | abpLocalization }}
+        </div>
       </div>
+
       <div class="mb-3">
         <label for="genre">{{ '::Genre' | abpLocalization }}</label>
         <select id="genre" formControlName="genre" class="form-select">
@@ -62,6 +76,7 @@
           </option>
         </select>
       </div>
+
       <div class="mb-3">
         <label for="yearOfRelease">{{ '::Year of Release' | abpLocalization }}</label>
         <input
@@ -69,18 +84,52 @@
           formControlName="yearOfRelease"
           type="number"
           class="form-control"
+          [class.is-invalid]="
+            form.get('yearOfRelease').invalid && form.get('yearOfRelease').touched
+          "
         />
+        <div
+          class="invalid-feedback"
+          *ngIf="form.get('yearOfRelease').invalid && form.get('yearOfRelease').touched"
+        >
+          {{ '::YearOfReleaseIsRequired' | abpLocalization }}
+        </div>
       </div>
+
       <div class="mb-3">
         <label for="price">{{ '::Price' | abpLocalization }}</label>
-        <input id="price" formControlName="price" type="number" class="form-control" />
+        <input
+          id="price"
+          formControlName="price"
+          type="number"
+          class="form-control"
+          [class.is-invalid]="form.get('price').invalid && form.get('price').touched"
+        />
+        <div
+          class="invalid-feedback"
+          *ngIf="form.get('price').invalid && form.get('price').touched"
+        >
+          {{ '::PriceIsRequired' | abpLocalization }}
+        </div>
       </div>
+
       <div class="mb-3">
-        <label for="directorId">Director</label>
-        <select id="directorId" formControlName="directorId" class="form-select">
+        <label for="directorId">{{ '::Director' | abpLocalization }}</label>
+        <select
+          id="directorId"
+          formControlName="directorId"
+          class="form-select"
+          [class.is-invalid]="form.get('directorId').invalid && form.get('directorId').touched"
+        >
           <option value="">-- Select Director --</option>
           <option *ngFor="let d of directors" [value]="d.id">{{ d.name }}</option>
         </select>
+        <div
+          class="invalid-feedback"
+          *ngIf="form.get('directorId').invalid && form.get('directorId').touched"
+        >
+          {{ '::DirectorIsRequired' | abpLocalization }}
+        </div>
       </div>
     </form>
   </ng-template>

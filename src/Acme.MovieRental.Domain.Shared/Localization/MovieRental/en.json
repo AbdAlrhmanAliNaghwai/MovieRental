@@ -60,6 +60,11 @@
     "RentCreated": "Rental Created",
     "MovieRental:DueDateCannotBeInThePast": "The due date cannot be in the past. Please select a future date.",
     "MovieRental:CannotDeleteActiveRental": "Cannot delete an active rental. Please mark it as returned first.",
-    "MovieRental:MoviePriceCannotBeLessThanZero" : "Daily Price cannot be less than 0."
+    "MovieRental:MoviePriceCannotBeLessThanZero": "Daily Price cannot be less than 0.",
+    "MovieRental:ReleaseYearCannotBeLessThanZero": "Year of release cannot be less than 0.",
+    "TitleIsRequired": "Title is required.",
+    "YearOfReleaseIsRequired": "Year of release is required.",
+    "PriceIsRequired": "Daily price is required.",
+    "DirectorIsRequired": "Please select a director."
   }
 }

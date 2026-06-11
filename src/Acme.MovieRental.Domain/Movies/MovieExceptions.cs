@@ -9,3 +9,11 @@ public class MoviePriceCannotBeLessThanZero : BusinessException
         
     }
 }
+
+public class ReleaseYearCannotBeLessThanZero : BusinessException
+{
+    public ReleaseYearCannotBeLessThanZero() : base(MovieRentalDomainErrorCodes.ReleaseYearCannotBeLessThanZero)
+    {
+        
+    }
+}
