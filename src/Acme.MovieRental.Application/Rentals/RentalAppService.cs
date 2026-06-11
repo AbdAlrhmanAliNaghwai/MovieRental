@@ -43,6 +43,7 @@ public class RentalAppService : ApplicationService, IRentalAppService
 
     public async Task<RentalDto> GetAsync(Guid id)
     {
+
         var rental = await _rentalRepository.GetAsync(id);
         await _rentalRepository.EnsurePropertyLoadedAsync(rental, r => r.Customer);
         await _rentalRepository.EnsurePropertyLoadedAsync(rental, r => r.Movie);
@@ -51,6 +52,12 @@ public class RentalAppService : ApplicationService, IRentalAppService
 
     public async Task<RentalDto> CreateAsync(CreateUpdateRentalDto input)
     {
+        if (input.DueDate.Date <= DateTime.Now.Date)
+        {
+            throw new DueDateCannotBeInThePastException();
+        }
+
+
         var rental = new Rental
         {
             CustomerId = input.CustomerId,
@@ -77,6 +84,11 @@ public class RentalAppService : ApplicationService, IRentalAppService
 
     public async Task DeleteAsync(Guid id)
     {
+        var rental = await _rentalRepository.GetAsync(id);
+        if (rental.ReturnDate == null)
+        {
+            throw new CannotDeleteActiveRentalException();
+        }
         await _rentalRepository.DeleteAsync(id);
     }
 }

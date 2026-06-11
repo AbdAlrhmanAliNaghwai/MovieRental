@@ -34,7 +34,7 @@
               <button ngbDropdownItem (click)="openModal(row)">
                 {{ '::Edit' | abpLocalization }}
               </button>
-              <button ngbDropdownItem (click)="delete(row.id)">Delete</button>
+              <button ngbDropdownItem (click)="delete(row.id)">{{'::Delete' | abpLocalization}}</button>
             </div>
           </div>
         </ng-template>

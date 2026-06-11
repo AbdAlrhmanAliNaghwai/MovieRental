@@ -54,9 +54,12 @@
     "MarkAsReturned": "Mark As Returned",
     "DueDate": "Due date",
     "MarkRentalAsReturnedConfirmationMessage": "Mark this rental as returned?",
-    "MovieReturnedNotificationMessage" : "Thank you for returning {0}",
+    "MovieReturnedNotificationMessage": "Thank you for returning {0}",
     "RentalReturned": "Rental Returned",
-    "ConfirmedRentedMovieMessage" : "You have rented {0}. Please return it by {1}.",
-    "RentCreated" : "Rental Created"
+    "ConfirmedRentedMovieMessage": "You have rented {0}. Please return it by {1}.",
+    "RentCreated": "Rental Created",
+    "MovieRental:DueDateCannotBeInThePast": "The due date cannot be in the past. Please select a future date.",
+    "MovieRental:CannotDeleteActiveRental": "Cannot delete an active rental. Please mark it as returned first.",
+    "MovieRental:MoviePriceCannotBeLessThanZero" : "Daily Price cannot be less than 0."
   }
 }

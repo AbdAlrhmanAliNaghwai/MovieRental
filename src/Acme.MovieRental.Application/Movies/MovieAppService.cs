@@ -21,6 +21,23 @@ IMovieAppService
         return await base.GetAsync(id);
     }
 
+    public override async Task<MovieDto> CreateAsync(CreateUpdateMovieDto input)
+    {
+        if (input.Price <= 0)
+        {
+            throw new MoviePriceCannotBeLessThanZero();
+        }
+        return await base.CreateAsync(input);
+    }
+    public override async Task<MovieDto> UpdateAsync(Guid id, CreateUpdateMovieDto input)
+    {
+        if (input.Price <= 0)
+        {
+            throw new MoviePriceCannotBeLessThanZero();
+        }
+        return await base.UpdateAsync(id, input);
+    }
+
     public override async Task<PagedResultDto<MovieDto>> GetListAsync(
         PagedAndSortedResultRequestDto input)
     {

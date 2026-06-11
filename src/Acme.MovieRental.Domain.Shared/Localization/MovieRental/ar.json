@@ -59,6 +59,9 @@
     "MovieReturnedNotificationMessage": "شكراً لإعادة {0}",
     "RentalReturned": "تم إعادة الإيجار",
     "ConfirmedRentedMovieMessage": "لقد استأجرت {0}, يرجى إعادته بحلول {1}.",
-    "RentCreated": "تم إنشاء الإيجار"
+    "RentCreated": "تم إنشاء الإيجار",
+    "MovieRental:DueDateCannotBeInThePast": "لا يمكن أن يكون تاريخ الاستحقاق في الماضي. يرجى اختيار تاريخ مستقبلي.",
+    "MovieRental:CannotDeleteActiveRental": "لا يمكن حذف استئجار نشط. يرجى تسجيل إعادته أولاً.",
+    "MovieRental:MoviePriceCannotBeLessThanZero": "السعر اليومي لا يمكن أن يكون أقل من 0."
   }
 }

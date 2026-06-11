@@ -2,5 +2,7 @@
 
 public static class MovieRentalDomainErrorCodes
 {
-    /* You can add your business exception error codes here, as constants */
+    public const string DueDateCannotBeInThePast = "MovieRental:DueDateCannotBeInThePast";
+    public const string CannotDeleteActiveRental = "MovieRental:CannotDeleteActiveRental";
+    public const string MoviePriceCannotBeLessThanZero = "MovieRental:MoviePriceCannotBeLessThanZero";
 }
