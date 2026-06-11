@@ -1,4 +1,4 @@
-import { ListService, PagedResultDto } from '@abp/ng.core';
+import { ListService, PagedResultDto, LocalizationService, CoreModule } from '@abp/ng.core';
 import { Component, OnInit, inject } from '@angular/core';
 import { RentalService, RentalDto } from '../proxy/rentals';
 import { CustomerService, CustomerDto } from '../proxy/customers';
@@ -24,6 +24,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [
     CommonModule,
+    CoreModule,
     ModalComponent,
     NgxDatatableModule,
     NgxDatatableDefaultDirective,
@@ -48,6 +49,7 @@ export class RentalComponent implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly confirmation = inject(ConfirmationService);
   private readonly toaster = inject(ToasterService);
+  private readonly localization = inject(LocalizationService);
 
   ngOnInit() {
     const streamCreator = query => this.rentalService.getList(query);
@@ -83,31 +85,32 @@ export class RentalComponent implements OnInit {
       const movieTitle =
         this.movies.find(m => m.id === this.form.value.movieId)?.title ?? 'the movie';
       const dueDate = new Date(this.form.value.dueDate).toLocaleDateString();
-      this.toaster.success(
-        `You have rented ${movieTitle}. Please return it by ${dueDate}.`,
-        'Rental Created',
-      );
+      this.toaster.success('::ConfirmedRentedMovieMessage', '::RentCreated', {
+        messageLocalizationParams: [movieTitle, dueDate],
+      });
     });
   }
 
   markAsReturned(id: string, movieTitle: string) {
-    this.confirmation.warn('Mark this rental as returned?', 'Are you sure?').subscribe(status => {
-      if (status === Confirmation.Status.confirm) {
-        this.rentalService.markAsReturned(id).subscribe(() => {
-          this.list.get();
-          this.toaster.success(`Thank you for returning ${movieTitle}!`, 'Rental Returned');
-        });
-      }
-    });
+    this.confirmation
+      .warn('::MarkRentalAsReturnedConfirmationMessage', '::AreYouSure')
+      .subscribe(status => {
+        if (status === Confirmation.Status.confirm) {
+          this.rentalService.markAsReturned(id).subscribe(() => {
+            this.list.get();
+            this.toaster.success('::MovieReturnedNotificationMessage', '::RentalReturned', {
+              messageLocalizationParams: [movieTitle],
+            });
+          });
+        }
+      });
   }
 
   delete(id: string) {
-    this.confirmation
-      .warn('Are you sure you want to delete this rental?', 'Are you sure?')
-      .subscribe(status => {
-        if (status === Confirmation.Status.confirm) {
-          this.rentalService.delete(id).subscribe(() => this.list.get());
-        }
-      });
+    this.confirmation.warn('::AreYouSureToDelete', '::AreYouSure').subscribe(status => {
+      if (status === Confirmation.Status.confirm) {
+        this.rentalService.delete(id).subscribe(() => this.list.get());
+      }
+    });
   }
 }

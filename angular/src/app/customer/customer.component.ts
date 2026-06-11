@@ -1,8 +1,14 @@
-import { ListService, PagedResultDto } from '@abp/ng.core';
+import { ListService, PagedResultDto, LocalizationService, CoreModule } from '@abp/ng.core';
 import { Component, OnInit, inject } from '@angular/core';
 import { CustomerService, CustomerDto } from '../proxy/customers';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ConfirmationService, Confirmation, ModalComponent, NgxDatatableDefaultDirective, NgxDatatableListDirective } from '@abp/ng.theme.shared';
+import {
+  ConfirmationService,
+  Confirmation,
+  ModalComponent,
+  NgxDatatableDefaultDirective,
+  NgxDatatableListDirective,
+} from '@abp/ng.theme.shared';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
@@ -15,6 +21,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [
     CommonModule,
+    CoreModule,
     ModalComponent,
     NgxDatatableModule,
     NgxDatatableDefaultDirective,
@@ -36,6 +43,7 @@ export class CustomerComponent implements OnInit {
   private readonly customerService = inject(CustomerService);
   private readonly fb = inject(FormBuilder);
   private readonly confirmation = inject(ConfirmationService);
+  private readonly localization = inject(LocalizationService);
 
   ngOnInit() {
     const streamCreator = query => this.customerService.getList(query);
@@ -70,7 +78,7 @@ export class CustomerComponent implements OnInit {
 
   delete(id: string) {
     this.confirmation
-      .warn('Are you sure you want to delete this customer?', 'Are you sure?')
+      .warn('::AreYouSureToDelete', '::AreYouSure')
       .subscribe(status => {
         if (status === Confirmation.Status.confirm) {
           this.customerService.delete(id).subscribe(() => this.list.get());

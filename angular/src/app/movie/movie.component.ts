@@ -1,4 +1,4 @@
-import { ListService, PagedResultDto } from '@abp/ng.core';
+import { ListService, PagedResultDto, LocalizationService, CoreModule } from '@abp/ng.core';
 import { Component, OnInit, inject } from '@angular/core';
 import { MovieService, MovieDto } from '../proxy/movies';
 import { DirectorService, DirectorDto } from '../proxy/directors';
@@ -22,6 +22,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [
     CommonModule,
+    CoreModule,
     ModalComponent,
     NgxDatatableModule,
     NgxDatatableDefaultDirective,
@@ -41,19 +42,25 @@ export class MovieComponent implements OnInit {
   form: FormGroup;
 
   genres = [
-    { value: 1, label: 'Action' },
-    { value: 2, label: 'Comedy' },
-    { value: 3, label: 'Drama' },
-    { value: 4, label: 'Horror' },
-    { value: 5, label: 'SciFi' },
-    { value: 6, label: 'Romance' },
+    { value: 1, key: '::Enum:MovieGenre.0' },
+    { value: 2, key: '::Enum:MovieGenre.1' },
+    { value: 3, key: '::Enum:MovieGenre.2' },
+    { value: 4, key: '::Enum:MovieGenre.3' },
+    { value: 5, key: '::Enum:MovieGenre.4' },
+    { value: 6, key: '::Enum:MovieGenre.5' },
   ];
+
+  getGenreLabel(value: number): string {
+    const genre = this.genres.find(g => g.value === value);
+    return genre ? this.localization.instant(genre.key) : '';
+  }
 
   public readonly list = inject(ListService);
   private readonly movieService = inject(MovieService);
   private readonly directorService = inject(DirectorService);
   private readonly fb = inject(FormBuilder);
   private readonly confirmation = inject(ConfirmationService);
+  private readonly localization = inject(LocalizationService);
 
   ngOnInit() {
     const streamCreator = query => this.movieService.getList(query);
@@ -64,10 +71,6 @@ export class MovieComponent implements OnInit {
     this.directorService.getList({ maxResultCount: 100, skipCount: 0 }).subscribe(response => {
       this.directors = response.items;
     });
-  }
-
-  getGenreLabel(value: number): string {
-    return this.genres.find(g => g.value === value)?.label ?? '';
   }
 
   openModal(movie?: MovieDto) {
@@ -97,12 +100,10 @@ export class MovieComponent implements OnInit {
   }
 
   delete(id: string) {
-    this.confirmation
-      .warn('Are you sure you want to delete this movie?', 'Are you sure?')
-      .subscribe(status => {
-        if (status === Confirmation.Status.confirm) {
-          this.movieService.delete(id).subscribe(() => this.list.get());
-        }
-      });
+    this.confirmation.warn('::AreYouSureToDelete', '::AreYouSure').subscribe(status => {
+      if (status === Confirmation.Status.confirm) {
+        this.movieService.delete(id).subscribe(() => this.list.get());
+      }
+    });
   }
 }

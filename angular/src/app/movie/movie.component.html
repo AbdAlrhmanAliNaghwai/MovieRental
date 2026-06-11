@@ -2,12 +2,12 @@
   <div class="card-header">
     <div class="row">
       <div class="col col-md-6">
-        <h5 class="card-title">Movies</h5>
+        <h5 class="card-title">{{ '::Movies' | abpLocalization }}</h5>
       </div>
       <div class="text-end col col-md-6">
         <button class="btn btn-primary" (click)="openModal()">
           <i class="fa fa-plus me-1"></i>
-          New Movie
+          {{ '::NewMovie' | abpLocalization }}
         </button>
       </div>
     </div>
@@ -28,10 +28,12 @@
         <ng-template let-row="row" ngx-datatable-cell-template>
           <div ngbDropdown container="body" class="d-inline-block">
             <button class="btn btn-primary btn-sm dropdown-toggle" ngbDropdownToggle>
-              Actions
+              {{ '::Actions' | abpLocalization }}
             </button>
             <div ngbDropdownMenu>
-              <button ngbDropdownItem (click)="openModal(row)">Edit</button>
+              <button ngbDropdownItem (click)="openModal(row)">
+                {{ '::Edit' | abpLocalization }}
+              </button>
               <button ngbDropdownItem (click)="delete(row.id)">Delete</button>
             </div>
           </div>
@@ -43,27 +45,34 @@
 
 <abp-modal [(visible)]="isModalOpen">
   <ng-template #abpHeader>
-    <h3>{{ isEditMode ? 'Edit' : 'New' }} Movie</h3>
+    <h3>{{ (isEditMode ? '::Edit' : '::NewMovie') | abpLocalization }}</h3>
   </ng-template>
 
   <ng-template #abpBody>
     <form [formGroup]="form" id="movie-form">
       <div class="mb-3">
-        <label for="title">Title</label>
+        <label for="title">{{ '::Title' | abpLocalization }}</label>
         <input id="title" formControlName="title" class="form-control" />
       </div>
       <div class="mb-3">
-        <label for="genre">Genre</label>
+        <label for="genre">{{ '::Genre' | abpLocalization }}</label>
         <select id="genre" formControlName="genre" class="form-select">
-          <option *ngFor="let g of genres" [value]="g.value">{{ g.label }}</option>
+          <option *ngFor="let g of genres" [value]="g.value">
+            {{ g.key | abpLocalization }}
+          </option>
         </select>
       </div>
       <div class="mb-3">
-        <label for="yearOfRelease">Year of Release</label>
-        <input id="yearOfRelease" formControlName="yearOfRelease" type="number" class="form-control" />
+        <label for="yearOfRelease">{{ '::Year of Release' | abpLocalization }}</label>
+        <input
+          id="yearOfRelease"
+          formControlName="yearOfRelease"
+          type="number"
+          class="form-control"
+        />
       </div>
       <div class="mb-3">
-        <label for="price">Daily Price</label>
+        <label for="price">{{ '::Price' | abpLocalization }}</label>
         <input id="price" formControlName="price" type="number" class="form-control" />
       </div>
       <div class="mb-3">
@@ -77,7 +86,11 @@
   </ng-template>
 
   <ng-template #abpFooter>
-    <button type="button" class="btn btn-secondary" #abpClose>Cancel</button>
-    <button type="button" class="btn btn-primary" (click)="save()">Save</button>
+    <button type="button" class="btn btn-secondary" #abpClose>
+      {{ '::Close' | abpLocalization }}
+    </button>
+    <button type="button" class="btn btn-primary" (click)="save()">
+      {{ '::Save' | abpLocalization }}
+    </button>
   </ng-template>
 </abp-modal>
