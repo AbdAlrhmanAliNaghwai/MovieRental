@@ -64,6 +64,7 @@ public class OpenIddictDataSeedContributor : OpenIddictDataSeedContributorBase, 
         if (!appClientId.IsNullOrWhiteSpace())
         {
             var appClientRootUrl = configurationSection["MovieRental_App:RootUrl"]?.TrimEnd('/');
+#pragma warning disable CS8604 // Possible null reference argument.
             await CreateOrUpdateApplicationAsync(
                 applicationType: OpenIddictConstants.ApplicationTypes.Web,
                 name: appClientId!,
@@ -85,6 +86,7 @@ public class OpenIddictDataSeedContributor : OpenIddictDataSeedContributorBase, 
                 clientUri: appClientRootUrl,
                 logoUri: "/images/clients/angular.svg"
             );
+#pragma warning restore CS8604 // Possible null reference argument.
         }
 
         
@@ -99,6 +101,7 @@ public class OpenIddictDataSeedContributor : OpenIddictDataSeedContributorBase, 
         {
             var swaggerRootUrl = configurationSection["MovieRental_Swagger:RootUrl"]?.TrimEnd('/');
 
+#pragma warning disable CS8604 // Possible null reference argument.
             await CreateOrUpdateApplicationAsync(
                 applicationType: OpenIddictConstants.ApplicationTypes.Web,
                 name: swaggerClientId!,
@@ -112,6 +115,7 @@ public class OpenIddictDataSeedContributor : OpenIddictDataSeedContributorBase, 
                 clientUri: swaggerRootUrl.EnsureEndsWith('/') + "swagger",
                 logoUri: "/images/clients/swagger.svg"
             );
+#pragma warning restore CS8604 // Possible null reference argument.
         }
 
 

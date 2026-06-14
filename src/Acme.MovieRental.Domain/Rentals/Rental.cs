@@ -8,7 +8,7 @@ namespace Acme.MovieRental.Rentals;
 public class Rental : AuditedAggregateRoot<Guid>
 {
     public Guid CustomerId { get; set; }
-
+    
     public Customer? Customer { get; set; }
 
     public Guid MovieId { get; set; }

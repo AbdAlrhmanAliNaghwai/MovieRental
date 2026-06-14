@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Acme.MovieRental.Customers;
 using Acme.MovieRental.Movies;
@@ -27,36 +27,37 @@ public class RentalAppService : ApplicationService, IRentalAppService
 
     public async Task<PagedResultDto<RentalDto>> GetListAsync(PagedAndSortedResultRequestDto input)
     {
-        var rentals = await _rentalRepository.GetListAsync();
-        var totalCount = rentals.Count;
-        var dtos = new List<RentalDto>();
+        var queryable = await _rentalRepository.WithDetailsAsync(r => r.Customer, r => r.Movie);
 
-        foreach (var rental in rentals)
-        {
-            await _rentalRepository.EnsurePropertyLoadedAsync(rental, r => r.Customer);
-            await _rentalRepository.EnsurePropertyLoadedAsync(rental, r => r.Movie);
-            dtos.Add(ObjectMapper.Map<Rental, RentalDto>(rental));
-        }
+        var totalCount = await AsyncExecuter.CountAsync(queryable);
+
+        queryable = queryable
+            .OrderByDescending(r => r.RentalDate)
+            .Skip(input.SkipCount)
+            .Take(input.MaxResultCount);
+
+        var rentals = await AsyncExecuter.ToListAsync(queryable);
+
+        var dtos = rentals.Select(rental => ObjectMapper.Map<Rental, RentalDto>(rental)).ToList();
 
         return new PagedResultDto<RentalDto>(totalCount, dtos);
     }
 
     public async Task<RentalDto> GetAsync(Guid id)
     {
+        var queryable = await _rentalRepository.WithDetailsAsync(r => r.Customer, r => r.Movie);
+        var rental = await AsyncExecuter.FirstOrDefaultAsync(queryable, r => r.Id == id);
 
-        var rental = await _rentalRepository.GetAsync(id);
-        await _rentalRepository.EnsurePropertyLoadedAsync(rental, r => r.Customer);
-        await _rentalRepository.EnsurePropertyLoadedAsync(rental, r => r.Movie);
+        if (rental == null)
+            throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Rental), id);
+
         return ObjectMapper.Map<Rental, RentalDto>(rental);
     }
 
     public async Task<RentalDto> CreateAsync(CreateUpdateRentalDto input)
     {
         if (input.DueDate.Date <= DateTime.Now.Date)
-        {
             throw new DueDateCannotBeInThePastException();
-        }
-
 
         var rental = new Rental
         {
@@ -66,9 +67,11 @@ public class RentalAppService : ApplicationService, IRentalAppService
             DueDate = input.DueDate
         };
 
-        var created = await _rentalRepository.InsertAsync(rental, autoSave: true);
-        await _rentalRepository.EnsurePropertyLoadedAsync(created, r => r.Customer);
-        await _rentalRepository.EnsurePropertyLoadedAsync(created, r => r.Movie);
+        var create = await _rentalRepository.InsertAsync(rental, autoSave: true);
+
+        var queryable = await _rentalRepository.WithDetailsAsync(r => r.Customer, r => r.Movie);
+        var created = await AsyncExecuter.FirstOrDefaultAsync(queryable, r => r.Id == create.Id);
+
         return ObjectMapper.Map<Rental, RentalDto>(created);
     }
 
@@ -76,19 +79,21 @@ public class RentalAppService : ApplicationService, IRentalAppService
     {
         var rental = await _rentalRepository.GetAsync(id);
         rental.ReturnDate = DateTime.Now;
-        var updated = await _rentalRepository.UpdateAsync(rental, autoSave: true);
-        await _rentalRepository.EnsurePropertyLoadedAsync(updated, r => r.Customer);
-        await _rentalRepository.EnsurePropertyLoadedAsync(updated, r => r.Movie);
+        await _rentalRepository.UpdateAsync(rental, autoSave: true);
+
+        var queryable = await _rentalRepository.WithDetailsAsync(r => r.Customer, r => r.Movie);
+        var updated = await AsyncExecuter.FirstOrDefaultAsync(queryable, r => r.Id == id);
+
         return ObjectMapper.Map<Rental, RentalDto>(updated);
     }
 
     public async Task DeleteAsync(Guid id)
     {
         var rental = await _rentalRepository.GetAsync(id);
+
         if (rental.ReturnDate == null)
-        {
             throw new CannotDeleteActiveRentalException();
-        }
+
         await _rentalRepository.DeleteAsync(id);
     }
 }
