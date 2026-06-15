@@ -38,7 +38,7 @@ public class RentalAppService : ApplicationService, IRentalAppService
 
         var rentals = await AsyncExecuter.ToListAsync(queryable);
 
-        var dtos = rentals.Select(rental => ObjectMapper.Map<Rental, RentalDto>(rental)).ToList();
+        var dtos = rentals.Select(ObjectMapper.Map<Rental, RentalDto>).ToList();
 
         return new PagedResultDto<RentalDto>(totalCount, dtos);
     }
