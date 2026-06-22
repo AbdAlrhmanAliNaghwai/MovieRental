@@ -67,6 +67,8 @@
     "TitleIsRequired": "العنوان مطلوب.",
     "YearOfReleaseIsRequired": "سنة الإصدار مطلوبة.",
     "PriceIsRequired": "السعر اليومي مطلوب.",
-    "DirectorIsRequired": "يرجى اختيار مخرج."
+    "DirectorIsRequired": "يرجى اختيار مخرج.",
+    "MovieRental:ActiveRentalForCustomer": "لا يمكن حذف عميل لديه استئجار نشط.",
+    "MovieRental:CannotDeleteActiveMovieRental": "لا يمكن حذف الفيلم لأنه مستأجر حالياً."
   }
 }

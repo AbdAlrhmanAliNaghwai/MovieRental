@@ -17,3 +17,8 @@ public class ReleaseYearCannotBeLessThanZero : BusinessException
         
     }
 }
+public class CannotDeleteActiveMovieRentalException : BusinessException
+{
+    public CannotDeleteActiveMovieRentalException() : base(MovieRentalDomainErrorCodes.CannotDeleteActiveMovieRental)
+    {}
+}

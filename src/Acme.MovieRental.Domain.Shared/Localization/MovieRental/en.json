@@ -65,6 +65,8 @@
     "TitleIsRequired": "Title is required.",
     "YearOfReleaseIsRequired": "Year of release is required.",
     "PriceIsRequired": "Daily price is required.",
-    "DirectorIsRequired": "Please select a director."
+    "DirectorIsRequired": "Please select a director.",
+    "MovieRental:ActiveRentalForCustomer": "Cannot delete customer with active rental.",
+    "MovieRental:CannotDeleteActiveMovieRental": "Cannot delete movie with active rental."
   }
 }

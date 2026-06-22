@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Acme.MovieRental.Directors;
+using Acme.MovieRental.Rentals;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
@@ -12,13 +13,16 @@ public class MovieAppService : ApplicationService, IMovieAppService
 {
     private readonly IRepository<Movie, Guid> _movieRepository;
     private readonly IRepository<Director, Guid> _directorRepository;
+    private readonly IRepository<Rental, Guid> _rentalRepository;
 
     public MovieAppService(
         IRepository<Movie, Guid> movieRepository,
-        IRepository<Director, Guid> directorRepository)
+        IRepository<Director, Guid> directorRepository,
+        IRepository<Rental, Guid> retalReposiroty)
     {
         _movieRepository = movieRepository;
         _directorRepository = directorRepository;
+        _rentalRepository = retalReposiroty;
     }
 
     public async Task<PagedResultDto<MovieDto>> GetListAsync(PagedAndSortedResultRequestDto input)
@@ -101,60 +105,15 @@ public class MovieAppService : ApplicationService, IMovieAppService
     public async Task DeleteAsync(Guid id)
     {
         var movie = await _movieRepository.GetAsync(id);
+
+        var hasActiveRental = await AsyncExecuter.AnyAsync(
+            (await _rentalRepository.GetQueryableAsync())
+                .Where(r => r.MovieId == id && r.ReturnDate == null)
+        );
+ 
+        if (hasActiveRental)
+            throw new CannotDeleteActiveMovieRentalException();
+
         await _movieRepository.DeleteAsync(movie);
     }
 }
-// {
-//     public MovieAppService(IRepository<Movie, Guid> repository) : base(repository)
-//     {
-//     }
-
-//     public override async Task<MovieDto> GetAsync(Guid id)
-//     {
-//         await Repository.EnsurePropertyLoadedAsync(
-//             await Repository.GetAsync(id), m => m.Director);
-//         return await base.GetAsync(id);
-//     }
-
-//     public override async Task<MovieDto> CreateAsync(CreateUpdateMovieDto input)
-//     {
-//         if (input.YearOfRelease <= 0)
-//         {
-//             throw new ReleaseYearCannotBeLessThanZero();
-//         }
-
-//         if (input.Price <= 0)
-//         {
-//             throw new MoviePriceCannotBeLessThanZero();
-//         }
-
-//         return await base.CreateAsync(input);
-//     }
-//     public override async Task<MovieDto> UpdateAsync(Guid id, CreateUpdateMovieDto input)
-//     {
-//         if (input.YearOfRelease <= 0)
-//         {
-//             throw new ReleaseYearCannotBeLessThanZero();
-//         }
-
-//         if (input.Price <= 0)
-//         {
-//             throw new MoviePriceCannotBeLessThanZero();
-//         }
-//         return await base.UpdateAsync(id, input);
-//     }
-
-//     public override async Task<PagedResultDto<MovieDto>> GetListAsync(
-//         PagedAndSortedResultRequestDto input)
-//     {
-//         var movies = await Repository.GetListAsync(includeDetails: true);
-//         var totalCount = movies.Count;
-//         var dtos = new List<MovieDto>();
-//         foreach (var movie in movies)
-//         {
-//             await Repository.EnsurePropertyLoadedAsync(movie, m => m.Director);
-//             dtos.Add(ObjectMapper.Map<Movie, MovieDto>(movie));
-//         }
-//         return new PagedResultDto<MovieDto>(totalCount, dtos);
-//     }
-// }
